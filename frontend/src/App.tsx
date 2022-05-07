@@ -1,5 +1,7 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+import Landing from './components/Landing';
 import Users from './components/Users';
 
 const client = new ApolloClient({
@@ -10,9 +12,12 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div>
-        <Users />
-      </div>
+      <Router>
+        <Routes>
+          <Route path='/' element={<Landing />} />
+          <Route path='users' element={<Users />} />
+        </Routes>
+      </Router>
     </ApolloProvider>
   );
 }
