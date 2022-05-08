@@ -11,6 +11,7 @@ import Users from './components/Users';
 import { setContext } from 'apollo-link-context';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import IsAuthenticated from './components/IsAuthenticated';
 
 const httpLink = new HttpLink({ uri: 'http://localhost:4000' });
 const authLink = setContext(async (req, { headers }) => {
@@ -27,9 +28,9 @@ const authLink = setContext(async (req, { headers }) => {
 // TODO fix typing
 const link = authLink.concat(httpLink as any);
 const client = new ApolloClient({
-  link: (link as any),
+  link: link as any,
   cache: new InMemoryCache(),
-})
+});
 
 function App() {
   return (
@@ -37,7 +38,16 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' element={<Landing />} />
-          <Route path='users' element={<Users />} />
+
+          <Route
+            path='users'
+            element={
+              <IsAuthenticated>
+                <Users />
+              </IsAuthenticated>
+            }
+          />
+
           <Route path='signup' element={<Signup />} />
           <Route path='login' element={<Login />} />
         </Routes>
